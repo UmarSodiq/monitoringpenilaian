@@ -1,0 +1,73 @@
+        <!-- Modal Confirm -->
+        <div id="modal-confirm"
+          class="fixed inset-0 bg-black/50 z-[120] hidden items-center justify-center p-4 backdrop-blur-sm">
+          <div class="bg-white rounded-lg shadow-xl w-full max-w-sm flex flex-col overflow-hidden">
+            <div class="p-4 border-b border-gray-200">
+              <h2 id="modal-confirm-title" class="text-lg font-bold text-slate-800">
+                Konfirmasi
+              </h2>
+            </div>
+            <div class="p-4 flex-1">
+              <p id="modal-confirm-message" class="text-sm text-slate-600">
+                Apakah Anda yakin?
+              </p>
+            </div>
+            <div class="p-4 bg-gray-50 flex justify-end gap-2 border-t border-gray-200">
+              <button onclick="closeConfirmModal(false)"
+                class="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-gray-300 rounded hover:bg-gray-50">
+                Batal
+              </button>
+              <button onclick="closeConfirmModal(true)"
+                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
+                Ya, Lanjutkan
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Set BA Satker -->
+        <div id="modal-ba-satker"
+          class="fixed inset-0 bg-black/50 z-[110] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+          <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden">
+            <div class="p-4 border-b border-gray-200 flex justify-between items-center bg-gray-50 flex-shrink-0">
+              <div>
+                <h2 id="modal-ba-title" class="text-lg font-bold text-slate-800">
+                  Daftar Satker
+                </h2>
+                <p id="modal-ba-subtitle" class="text-xs text-slate-500">
+                  Berdasarkan klasifikasi K/L
+                </p>
+              </div>
+              <button onclick="
+                    document
+                      .getElementById('modal-ba-satker')
+                      .classList.add('hidden')
+                  " class="text-slate-400 hover:text-rose-600 transition p-2 rounded-full hover:bg-rose-50">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="p-4 overflow-y-auto flex-1">
+              <div class="overflow-x-auto border border-gray-200 rounded-lg">
+                <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                  <thead class="bg-gray-50 border-b border-gray-200 uppercase text-xs text-slate-500">
+                    <tr>
+                      <th class="px-4 py-3 font-semibold w-24">Kode</th>
+                      <th class="px-4 py-3 font-semibold">Nama Satker</th>
+                      <th class="px-4 py-3 font-semibold text-right">
+                        Nilai Akhir
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="modal-ba-body" class="divide-y divide-gray-100">
+                    <!-- Injected via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
