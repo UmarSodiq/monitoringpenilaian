@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Shared Workbooks (for synchronization across devices)
+    match /shared_workbooks/{document} {
+      allow read: if true;
+      llow write: if request.auth != null;
+    }
+
+    // Helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow create: if isOwner(userId) && isValidId(userId) && isValidUser(incoming());
+      allow update: if isOwner(userId) && isValidId(userId) && isValidUser(incoming());
+
+      function isValidUser(data) {
+        return data.keys().hasAll(['userId', 'email']) &&
+               data.userId == userId &&
+               data.email is string && data.email.size() <= 256;
+      }
+
+      // Application State
+      match /data/{stateId} {
+        allow get: if isOwner(userId) && isValidId(userId) && isValidId(stateId);
+        allow create: if isOwner(userId) && isValidId(userId) && isValidId(stateId) && isValidAppState(incoming());
+        allow update: if isOwner(userId) && isValidId(userId) && isValidId(stateId) && isValidAppState(incoming());
+
+        function isValidAppState(data) {
+          return (data.keys().hasAny(['tolakViolations', 'pajakViolations', 'kasTunaiViolations', 'allSatkerDataRaw'])) &&
+                 (data.get('tolakViolations', []) is list) &&
+                 (data.get('pajakViolations', []) is list) &&
+                 (data.get('kasTunaiViolations', []) is list);
+        }
+      }
+    }
+  }
+}

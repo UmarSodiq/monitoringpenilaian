@@ -1,0 +1,8 @@
+{
+  "name": "Aplikasi Monitoring dan Penilaian Satker",
+  "description": "Alat otomatisasi analisis LPJ Satker dan visualisasi indikator KPPN (Penolakan, Pajak, Kas Tunai) dengan fitur sinkronisasi cloud.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

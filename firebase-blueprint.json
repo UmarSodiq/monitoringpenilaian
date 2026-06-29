@@ -1,0 +1,74 @@
+{
+  "entities": {
+    "userProfile": {
+      "title": "User Profile",
+      "description": "Basic user information.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "UID from Firebase Auth"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User display name"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "email"]
+    },
+    "appState": {
+      "title": "Application State",
+      "description": "Stores the processed violation data for the dashboard charts and summary.",
+      "type": "object",
+      "properties": {
+        "tolakViolations": {
+          "type": "array",
+          "description": "Array of LPJ rejection violations"
+        },
+        "pajakViolations": {
+          "type": "array",
+          "description": "Array of tax compliance violations"
+        },
+        "kasTunaiViolations": {
+          "type": "array",
+          "description": "Array of cash balance violations"
+        },
+        "allSatkerDataRaw": {
+          "type": "array",
+          "description": "Raw data for satker ranking"
+        },
+        "latestLpjMonthStr": {
+          "type": "string"
+        },
+        "lastResultsForUI": {
+          "type": "array"
+        },
+        "lastViolationsData": {
+          "type": "object"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "userProfile",
+      "description": "The user's own profile."
+    },
+    "/users/{userId}/data/current": {
+      "schema": "appState",
+      "description": "Persistent dashboard state for synchronization."
+    }
+  }
+}
