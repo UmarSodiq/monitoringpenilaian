@@ -3128,7 +3128,16 @@
           }
 
           if (typeof window.switchTab === "function") {
-            window.switchTab(isPenilaian ? (activeTab || "AUTO") : targetTab);
+            let nextTab = targetTab;
+            if (isPenilaian) {
+              // If activeTab is not one of the manual sheets (e.g. it was left as TOLAK), reset to PENILAIAN
+              if (activeTab && typeof manualSheetNames !== 'undefined' && !manualSheetNames.includes(activeTab)) {
+                nextTab = "PENILAIAN";
+              } else {
+                nextTab = activeTab || "PENILAIAN";
+              }
+            }
+            window.switchTab(nextTab);
           }
         }
       }
