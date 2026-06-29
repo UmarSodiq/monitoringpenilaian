@@ -4811,9 +4811,7 @@
         html += `<button onclick="switchTab('${s}')" class="tab-btn px-4 py-2.5 border-b-2 text-[0.8125rem] transition-colors whitespace-nowrap ${activeTab === s ? "border-secondary text-primary font-bold" : "border-transparent text-textMuted hover:text-textMain"}">Sheet ${s}</button>`;
       });
 
-      if (window.pajakViolations && window.pajakViolations.length > 0) {
-        html += `<button onclick="switchTab('PAJAK')" class="tab-btn px-4 py-2.5 border-b-2 text-[0.8125rem] transition-colors whitespace-nowrap text-rose-600 hover:text-rose-700 ${activeTab === "PAJAK" ? "border-rose-500 font-bold" : "border-transparent"}">Kepatuhan Pajak \u26A0\uFE0F</button>`;
-      }
+
 
       tabsContainer.innerHTML = html;
     }
@@ -6163,6 +6161,19 @@
         : [];
 
       const isPenilaian = sheetName && sheetName.toUpperCase() === "PENILAIAN";
+      const formContainer = document.getElementById("manual-input-form");
+
+      if (isPenilaian) {
+        if (formContainer) {
+          formContainer.classList.add("!hidden"); // Force hide
+          formContainer.innerHTML = "";
+        }
+        return;
+      } else {
+        if (formContainer) {
+          formContainer.classList.remove("!hidden");
+        }
+      }
 
       for (let c = 0; c < colCount; c++) {
         let hName = headers[c] || "";
@@ -6172,19 +6183,10 @@
           ? ` onkeypress="if(event.key.length===1 && !/[0-9.-]/.test(event.key)) event.preventDefault()"`
           : "";
 
-        let isDisabled = false;
-        if (isPenilaian) {
-          if (!hUp.includes("TANPA BA") && !hUp.includes("TANPA_BA")) {
-            isDisabled = true;
-          }
-        }
-
-        let disabledAttr = isDisabled ? ' disabled style="opacity: 0.5; background: #f1f5f9; cursor: not-allowed;" title="Kolom ini bersifat otomatis dan tidak dapat diubah manual"' : "";
-
         formHtml += `
              <div class="flex flex-col shrink-0">
                <span class="text-[0.6rem] uppercase font-semibold text-textMuted ml-1 opacity-80" title="${hName}">Kolom ${XLSX.utils.encode_col(c)} (${hName || "?"})</span>
-               <input type="text" id="manual-input-${c}" placeholder="..." class="border border-border rounded px-2 py-1.5 text-sm w-32 focus:outline-none focus:border-secondary shadow-sm bg-bgCard"${preventChars}${disabledAttr} />
+               <input type="text" id="manual-input-${c}" placeholder="..." class="border border-border rounded px-2 py-1.5 text-sm w-32 focus:outline-none focus:border-secondary shadow-sm bg-bgCard"${preventChars} />
              </div>
            `;
       }
@@ -6199,7 +6201,9 @@
           </button>
         </div>`;
 
-      document.getElementById("manual-input-form").innerHTML = formHtml;
+      if (formContainer) {
+        formContainer.innerHTML = formHtml;
+      }
     }
 
     window.addManualColumn = function (sheetName) {
